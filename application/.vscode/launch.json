@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug STM32L151 (App @0x08003000)",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+
+      // File ELF (axf) để debug
+      "executable": "/home/dinhcuong/Documents/Git/ak-base-kit-stm32l151/application/build_ak-base-kit-stm32l151-application/ak-base-kit-stm32l151-application.axf",
+      "device": "STM32L151RE",
+      "runToEntryPoint": "main_app",
+      "svdFile": "/home/dinhcuong/Documents/Git/ak-base-kit-stm32l151/application/STM32L151.svd",
+      "preLaunchTask": "build",
+
+      // Đường dẫn GDB compiler
+      "gdbPath": "/home/dinhcuong/Documents/GNU_Toolchain/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb",
+
+      // OpenOCD scripts
+      "configFiles": [
+        "/usr/local/share/openocd/scripts/interface/stlink-v2.cfg",
+        "/usr/local/share/openocd/scripts/target/stm32l1.cfg"
+      ],
+
+      // Khi bắt đầu debug, nạp code vào 0x08003000
+      "postLaunchCommands": [
+  "monitor reset halt",   // halt ngay sau reset
+  "load",                 // nạp ELF vào flash
+  "monitor reset init",   // init lại CPU
+  "continue"
+],
+
+      // Không cần override command khi ta đã có postLaunchCommands
+      "overrideLaunchCommands": [],
+
+      // Tùy chọn thêm để tránh lỗi timeout
+      "showDevDebugOutput": "none"
+    }
+  ]
+}
